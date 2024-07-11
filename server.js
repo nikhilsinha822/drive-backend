@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const multer = require('multer')
 const PORT = process.env.PORT || 3500;
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
 const connectDB = require('./config/dbConn')
 
 connectDB();
@@ -14,6 +14,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 app.use('/auth', require('./router/auth.router'));
 app.use('/image', require('./router/image.router'));

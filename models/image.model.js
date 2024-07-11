@@ -6,13 +6,14 @@ const imageSchema = new Schema({
         type: String,
         required: true
     },
-    clodinaryId: {
+    cloudinaryId: {
         type: String,
         required: true,
     },
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User' 
+        ref: 'User',
+        required: true,
     },
     parent: {
         type: Schema.Types.ObjectId,
@@ -21,5 +22,7 @@ const imageSchema = new Schema({
         index: true
     }
 }, {timestamps : true})
+
+imageSchema.index({name: 'text'})
 
 module.exports = mongoose.model('Image', imageSchema)
