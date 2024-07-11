@@ -60,7 +60,9 @@ const sendCookie = (payload, res) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 6 * 60 * 60 * 1000 });
 
-    res.cookie("jwt", accessToken, {
+    const token = `Bearer ${accessToken}`
+
+    res.cookie("jwt", token, {
         secure: true,
         httpOnly: true,
         sameSite: 'None',

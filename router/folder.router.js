@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const { getFolderContent, createFolder } = require('../controller/folder.controller')
+const { validateToken } = require('../middleware/auth.middleware')
 
-router.post('/create')
-    .post(createFolder)
+router.route('/')
+    .get(validateToken, getFolderContent)
+    
+router.route('/create')
+    .post(validateToken, createFolder)
 
-router.route('/:id')
-    .get(getFolderContent)
 
 module.exports = router

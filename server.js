@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const multer = require('multer')
 const PORT = process.env.PORT || 3500;
+const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn')
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 app.use('/auth', require('./router/auth.router'));
 app.use('/image', require('./router/image.router'));
