@@ -73,7 +73,7 @@ const sendCookie = (payload, res) => {
     const token = `Bearer ${accessToken}`
 
     res.cookie("jwt", token, {
-        secure: process.env.NODE_ENV === 'development',
+        secure: true,
         httpOnly: true,
         sameSite: 'None',
         maxAge: 6 * 60 * 60 * 1000,
