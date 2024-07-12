@@ -11,12 +11,12 @@ const login = async (req, res) => {
 
         const user = await User.findOne({ username });
         if (!user)
-            return res.status(403).json({ message: "Invalid Credentials" })
+            return res.status(401).json({ message: "Invalid Credentials" })
 
         const passwordValid = bcrypt.compareSync(password, user.password);
 
         if (!passwordValid)
-            return res.status(403).json({ message: "Invalid Credentials" })
+            return res.status(401).json({ message: "Invalid Credentials" })
 
         sendCookie({ username: user.username }, res);
     } catch (err) {
@@ -54,6 +54,16 @@ const register = async (req, res) => {
 
 }
 
+const userLogout = (req, res) => {
+    if (!req?.cookies?.jwt) return res.sendStatus(204);
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None'
+    })
+    res.json({ message: 'Cookie cleared' });
+}
+
 
 const sendCookie = (payload, res) => {
     const accessToken = jwt.sign(payload,
@@ -63,16 +73,17 @@ const sendCookie = (payload, res) => {
     const token = `Bearer ${accessToken}`
 
     res.cookie("jwt", token, {
-        secure: true,
+        secure: process.env.NODE_ENV === 'development',
         httpOnly: true,
         sameSite: 'None',
         maxAge: 6 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({message: "success"})
+    res.status(200).json({ message: "success" })
 }
 
 module.exports = {
     login,
-    register
+    register,
+    userLogout
 }

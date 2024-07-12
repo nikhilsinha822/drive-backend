@@ -5,7 +5,7 @@ const upload = require('../middleware/multerConfig.middleware')
 const { validateToken } = require('../middleware/auth.middleware')
 
 
-router.route('/new').post(validateToken, upload.array('image'), uploadImage)
+router.route('/new').post(validateToken, upload.array('images'), uploadImage)
 
 router.route('/search').get(validateToken, searchImage)
 

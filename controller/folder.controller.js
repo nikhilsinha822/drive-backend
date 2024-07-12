@@ -23,7 +23,7 @@ const createFolder = async (req, res) => {
 
 const getFolderContent = async (req, res) => {
     try {
-        const folder = req.body.folderId || null;
+        const folder = req.query.folderId || null;
 
         const childrenFolder = await Folder.find({
             owner: req.user._id,
@@ -33,7 +33,7 @@ const getFolderContent = async (req, res) => {
         const childrenImages = await Images.find({
             owner: req.user._id,
             parent: folder
-        })
+        }).select('-cloudinaryId')
 
         res.status(200).json({
             message: "Success", data: {

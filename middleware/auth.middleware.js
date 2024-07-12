@@ -6,7 +6,7 @@ const validateToken = async (req, res, next) => {
         const authUser = req?.cookies?.jwt
 
         if (!authUser || !authUser.startsWith('Bearer '))
-            return res.status(403).json({ message: "Access Denied" })
+            return res.status(401).json({ message: "Access Denied" })
 
         const token = authUser.split(' ')[1]
 
@@ -15,7 +15,7 @@ const validateToken = async (req, res, next) => {
         const user = await User.findOne({ username: decoded?.username }).select('-password').lean().exec()
 
         if(!decoded.username || !user)
-            return res.status(403).json({ message: "Access Denied" })
+            return res.status(401).json({ message: "Access Denied" })
 
         req.user = user
         next()
